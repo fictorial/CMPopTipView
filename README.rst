@@ -1,6 +1,8 @@
 CMPopTipView
 ============
 
+Note: Modified to take any generic UIView, instead of just text. 
+
 An iOS UIView subclass that displays a rounded rect "bubble", containing
 a text message, pointing at a specified button or view.
 

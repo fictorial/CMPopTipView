@@ -100,11 +100,9 @@ typedef enum {
 @interface CMPopTipView : UIView {
 	UIColor					*backgroundColor;
 	id<CMPopTipViewDelegate>	delegate;
-	NSString				*message;
 	id						targetObject;
-	UIColor					*textColor;
-	UIFont					*textFont;
     CMPopTipAnimation       animation;
+    UIView                  *view;
 
 	@private
 	CGSize					bubbleSize;
@@ -119,16 +117,14 @@ typedef enum {
 
 @property (nonatomic, retain)			UIColor					*backgroundColor;
 @property (nonatomic, assign)		id<CMPopTipViewDelegate>	delegate;
-@property (nonatomic, retain)			NSString				*message;
 @property (nonatomic, retain, readonly)	id						targetObject;
-@property (nonatomic, retain)			UIColor					*textColor;
-@property (nonatomic, retain)			UIFont					*textFont;
 @property (nonatomic, assign)           CMPopTipAnimation       animation;
+@property (nonatomic, retain)           UIView                  *view;
 
 - (void)presentPointingAtView:(UIView *)targetView inView:(UIView *)containerView animated:(BOOL)animated;
 - (void)presentPointingAtBarButtonItem:(UIBarButtonItem *)barButtonItem animated:(BOOL)animated;
 - (void)dismissAnimated:(BOOL)animated;
-- (id)initWithMessage:(NSString *)messageToShow;
+- (id)initWithView:(UIView*)view;
 
 @end
 

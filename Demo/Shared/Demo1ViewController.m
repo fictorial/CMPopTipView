@@ -72,14 +72,24 @@
 		NSArray *colorScheme = [colorSchemes objectAtIndex:foo4random()*[colorSchemes count]];
 		UIColor *backgroundColor = [colorScheme objectAtIndex:0];
 		UIColor *textColor = [colorScheme objectAtIndex:1];
+        
+        UILabel * label = [[[UILabel alloc] init] autorelease];
+        
+        CGSize textSize = [message sizeWithFont:label.font
+                              constrainedToSize:CGSizeMake(self.view.frame.size.width / 2, 99999.0)
+                                  lineBreakMode:UILineBreakModeWordWrap];
+        
+        label.frame = CGRectMake(0, 0, textSize.width, textSize.height);
+        label.text = message;
 		
-		CMPopTipView *popTipView = [[[CMPopTipView alloc] initWithMessage:message] autorelease];
+		CMPopTipView *popTipView = [[[CMPopTipView alloc] initWithView:label] autorelease];
 		popTipView.delegate = self;
 		if (backgroundColor && ![backgroundColor isEqual:[NSNull null]]) {
 			popTipView.backgroundColor = backgroundColor;
+            label.backgroundColor = [UIColor clearColor];
 		}
 		if (textColor && ![textColor isEqual:[NSNull null]]) {
-			popTipView.textColor = textColor;
+            label.textColor = textColor;
 		}
         
         popTipView.animation = arc4random() % 2;

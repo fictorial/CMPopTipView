@@ -34,11 +34,9 @@
 
 @synthesize backgroundColor;
 @synthesize delegate;
-@synthesize message;
 @synthesize targetObject;
-@synthesize textColor;
-@synthesize textFont;
 @synthesize animation;
+@synthesize view;
 
 - (void)drawRect:(CGRect)rect {
 	
@@ -112,7 +110,6 @@
 	CGContextSetRGBFillColor(c, 0.0, 0.0, 0.0, 0.9);
 	CGContextFillPath(c);
     CGContextRestoreGState(c);
-    
 	
 	// Draw clipped background gradient
 	CGContextAddPath(c, bubblePath);
@@ -181,17 +178,12 @@
 	CGContextDrawPath(c, kCGPathStroke);
 	
 	CGPathRelease(bubblePath);
-	
-	// Draw text
-	[textColor set];
-	CGRect textFrame = CGRectMake(bubbleRect.origin.x + cornerRadius,
-								  bubbleRect.origin.y + cornerRadius,
-								  bubbleRect.size.width - cornerRadius*2,
-								  bubbleRect.size.height - cornerRadius*2);
-	[self.message drawInRect:textFrame
-					withFont:textFont
-			   lineBreakMode:UILineBreakModeWordWrap
-				   alignment:UITextAlignmentCenter];
+    
+    self.view.frame = CGRectMake(bubbleRect.origin.x + cornerRadius, 
+                                 bubbleRect.origin.y + cornerRadius, 
+                                 bubbleRect.size.width - cornerRadius*2, 
+                                 bubbleRect.size.height - cornerRadius*2);
+    
 }
 
 - (void)presentPointingAtView:(UIView *)targetView inView:(UIView *)containerView animated:(BOOL)animated {
@@ -212,9 +204,8 @@
 		rectWidth = containerView.frame.size.width*2/3;
 	}
     
-	CGSize textSize = [self.message sizeWithFont:textFont
-							   constrainedToSize:CGSizeMake(rectWidth, 99999.0)
-								   lineBreakMode:UILineBreakModeWordWrap];
+    CGSize textSize = self.view.frame.size;
+    
 	bubbleSize = CGSizeMake(textSize.width + cornerRadius*2, textSize.height + cornerRadius*2);
 	
 	CGPoint targetRelativeOrigin    = [targetView.superview convertPoint:targetView.frame.origin toView:containerView.superview];
@@ -396,29 +387,27 @@
 		pointerSize = 12.0;
 		sidePadding = 2.0;
 		
-		self.textFont = [UIFont boldSystemFontOfSize:14.0];
-		self.textColor = [UIColor whiteColor];
 		self.backgroundColor = [UIColor colorWithRed:62.0/255.0 green:60.0/255.0 blue:154.0/255.0 alpha:1.0];
         self.animation = CMPopTipAnimationSlide;
+        
     }
     return self;
 }
 
-- (id)initWithMessage:(NSString *)messageToShow {
+- (id)initWithView:(UIView *)subview {
 	CGRect frame = CGRectZero;
 	
 	if ((self = [self initWithFrame:frame])) {
-		self.message = messageToShow;
+		self.view = subview;
+        [self addSubview:subview];
 	}
 	return self;
 }
 
 - (void)dealloc {
 	[backgroundColor release];
-	[message release];
 	[targetObject release];
-	[textColor release];
-	[textFont release];
+	[view release];
 	
     [super dealloc];
 }
