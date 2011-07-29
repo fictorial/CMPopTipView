@@ -82,6 +82,8 @@
         label.frame = CGRectMake(0, 0, textSize.width, textSize.height);
         label.text = message;
 		
+    label.numberOfLines = textSize.height / label.font.lineHeight;
+
 		CMPopTipView *popTipView = [[[CMPopTipView alloc] initWithView:label] autorelease];
 		popTipView.delegate = self;
 		if (backgroundColor && ![backgroundColor isEqual:[NSNull null]]) {
