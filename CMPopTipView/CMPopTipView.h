@@ -120,6 +120,7 @@ typedef enum {
 @property (nonatomic, retain, readonly)	id						targetObject;
 @property (nonatomic, assign)           CMPopTipAnimation       animation;
 @property (nonatomic, retain)           UIView                  *view;
+@property (nonatomic, assign)           CGFloat                 maxWidth;
 
 - (void)presentPointingAtView:(UIView *)targetView inView:(UIView *)containerView animated:(BOOL)animated;
 - (void)presentPointingAtBarButtonItem:(UIBarButtonItem *)barButtonItem animated:(BOOL)animated;

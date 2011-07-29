@@ -37,6 +37,7 @@
 @synthesize targetObject;
 @synthesize animation;
 @synthesize view;
+@synthesize maxWidth;
 
 - (void)drawRect:(CGRect)rect {
 	
@@ -195,17 +196,38 @@
     
 	// Size of rounded rect
 	CGFloat rectWidth;
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		// iPad
-		rectWidth = containerView.frame.size.width/3;
-	}
-	else {
-		// iPhone
-		rectWidth = containerView.frame.size.width*2/3;
-	}
     
     CGSize textSize = self.view.frame.size;
     
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        // iPad
+        if (maxWidth) {
+            if (maxWidth < containerView.frame.size.width) {
+                rectWidth = maxWidth;
+            }
+            else {
+                rectWidth = containerView.frame.size.width - 20;
+            }
+        }
+        else {
+            rectWidth = (int)(containerView.frame.size.width/3);
+        }
+    }
+    else {
+        // iPhone
+        if (maxWidth) {
+            if (maxWidth < containerView.frame.size.width) {
+                rectWidth = maxWidth;
+            }
+            else {
+                rectWidth = containerView.frame.size.width - 10;
+            }
+        }
+        else {
+            rectWidth = (int)(containerView.frame.size.width*2/3);
+        }
+    }
+
 	bubbleSize = CGSizeMake(textSize.width + cornerRadius*2, textSize.height + cornerRadius*2);
 	
 	CGPoint targetRelativeOrigin    = [targetView.superview convertPoint:targetView.frame.origin toView:containerView.superview];
@@ -237,7 +259,7 @@
 	CGFloat W = containerView.frame.size.width;
 	
 	CGFloat x_p = targetView.center.x;
-	CGFloat x_b = x_p - (bubbleSize.width/2);
+	CGFloat x_b = x_p - roundf(bubbleSize.width/2);
 	if (x_b < sidePadding) {
 		x_b = sidePadding;
 	}
